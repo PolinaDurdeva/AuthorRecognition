@@ -1,15 +1,12 @@
 #-*- coding: utf-8 -*-
-from CleaningTextMaster import CleaningText
-from BookModule import Book
-import Constants
-import os
-import codecs
 from LibraryModule import Library
 from KmeansClustering import KMeans
 from PAMClustering import PamCluster
 from GlobalKmeansClustering import GlobalKmeans
 from ClassificationModule import Classification
 from ClusteringProcess import ClusterMaster
+import Utils
+from Statistics import Statistics
 
 
 '''def test_book():
@@ -24,40 +21,82 @@ from ClusteringProcess import ClusterMaster
     print "pfr: ", book.get_pfr()'''
     
         
-def test_kmeans():
-    lib = Library(cleaning=False)
-    lib.load_clustring_clean_books(Constants.cluster_path)
-    kmeams_cl = KMeans(lib.get_books(), 6)
+def test_kmeans(language, authors, clean):
+    lib = Library(cleaning=clean)
+    lib.load_library(language)
+    cluster_master = ClusterMaster()
+    kmeams_cl = KMeans(lib.get_books(), authors)
     kmeams_cl.start_clustering()
     kmeams_cl.print_results()
+    cluster_master.expertize(authors, kmeams_cl.get_clusters(), lib.get_authors_name())
+    kmeams_cl = KMeans(lib.get_books(), authors)
+    kmeams_cl.start_clustering()
+    kmeams_cl.print_results()
+    cluster_master.expertize(authors, kmeams_cl.get_clusters(), lib.get_authors_name())
+    kmeams_cl = KMeans(lib.get_books(), authors)
+    kmeams_cl.start_clustering()
+    kmeams_cl.print_results()
+    cluster_master.expertize(authors, kmeams_cl.get_clusters(), lib.get_authors_name())
+    kmeams_cl = KMeans(lib.get_books(), authors)
+    kmeams_cl.start_clustering()
+    kmeams_cl.print_results()
+    cluster_master.expertize(authors, kmeams_cl.get_clusters(), lib.get_authors_name())
+ 
+def test_pam(language, authors, clean):
+    lib = Library(cleaning=clean)
+    lib.load_library(language)
+    pam_cl = PamCluster(lib.get_books(), authors)
     cluster_master = ClusterMaster()
-    cluster_master.expertize(6, kmeams_cl.get_clusters(), lib.get_authors())
-        
-def test_pam():
-    lib = Library(cleaning=False)
-    lib.load_clustring_clean_books(Constants.cluster_path)
-    pam_cl = PamCluster(lib.get_books(), 3)
-    pam_cl.start_clustering()
-    cluster_master = ClusterMaster()
-    cluster_master.expertize(3, pam_cl.get_clusters(), lib.get_authors())
+    cluster_master.expertize(authors, pam_cl.get_clusters(), lib.get_authors_name())
     
-def test_gkm():
-    lib = Library(cleaning=False)
-    lib.load_clustring_clean_books(Constants.cluster_path)
-    gkm_cl = GlobalKmeans(lib.get_books(), 3)
+def test_gkm(language, authors, clean):
+    lib = Library(cleaning=clean)
+    lib.load_library(language)
+    gkm_cl = GlobalKmeans(lib.get_books(), authors)
     gkm_cl.start_clustering()
     gkm_cl.print_results()
     cluster_master = ClusterMaster()
-    cluster_master.expertize(3, gkm_cl.get_clusters(), lib.get_authors())
+    cluster_master.expertize(authors, gkm_cl.get_clusters(), lib.get_authors())
          
-def test_classification():
-    cl = Classification(True)
+def test_classification(clean=False, language='en'):
+    lib = Library(cleaning=clean)
+    lib.load_library(language=language)
+    cl = Classification(language=language, books=lib.get_books(),authors=lib.get_authors())
     cl.start_classification()
+    #st = Statistics(books=lib.get_books(),authors=lib.get_authors())
+    #st.get_avg_len_of_books()
     
-def test_statistics():
-    cl = Classification(False)
-    cl.collect_statistics()
+    
+def test_statistics(clean=False, language='en'):
+    lib = Library(cleaning=clean)
+    lib.load_library(language=language)
+    st = Statistics(books=lib.get_books(),authors=lib.get_authors())
+    st.collect_statistics()
+    #st.get_avg_len_of_books()
+    #cl.get_distanse_between_author(Constants.results_filepath)
+    
+def test_stationary_len(clean=False, language='en'):
+    lib = Library(cleaning=clean)
+    lib.load_library(language=language)
+    cl = Classification(language=language, books=lib.get_books(),authors=lib.get_authors())
+    cl.drow_stat_len()
 
+def test_accuracy(clean=False, language='en'):
+    lib = Library(cleaning=clean)
+    lib.load_library(language=language)
+    l=10000
+    while (l > 0):
+        print l
+        for book in lib.get_books():
+            book.set_new_text(text=Utils.cut_text(book.get_text(), l))
+        cl = Classification(language=language, books=lib.get_books(),authors=lib.get_authors())
+        cl.start_classification()
+        if (l>5000): 
+            l -= 50000
+        else:
+            l -= 1000 
+        
+    
     
        
 

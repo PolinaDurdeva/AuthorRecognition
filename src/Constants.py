@@ -1,17 +1,19 @@
+#-*- coding: utf-8 -*-
 import Utils
 import os
 
-language = 'ru'
+#language = 'ru'
 #language = 'en'
-set_pfr = Utils.get_set_pfr(language)
+books_language = 'ru'
+ru_alfa = u"абвгдеёжзийклмнопрстуфхцчщшъьюяыэ"
+german_alfa = u"qwertyuiopasdfghjklzxcvbnmäöüß"
+set_pfr = Utils.get_set_pfr(books_language)
 #Directories
 data_path = os.path.join(os.getcwd(), "..", "Data")
 ngrams_path = os.path.join(data_path, "Ngramms")
-classif_dirty_book_path = os.path.join(data_path,"ClassificationRUDirty")
-classif_clean_book_path = os.path.join(data_path,"ClassificationRUClean")
-cluster_path = os.path.join(data_path,"ClusteringCleanBook")
-#classif_dirty_book_path = os.path.join(data_path,"ClassificationDirtyBook")
-#classif_clean_book_path = os.path.join(data_path,"ClassificationCleanBook")
+library_path = os.path.join(data_path, "Library")
+clean_library = os.path.join(library_path, "clean")
+dirty_library = os.path.join(library_path, "dirty")
 statinary_len_path = os.path.join(data_path,"StationaryLength")
 #Files
 statistics_filepath = os.path.join(data_path,"Statistics.txt")

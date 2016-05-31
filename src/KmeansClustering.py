@@ -34,7 +34,8 @@ class KMeans(object):
             lenght = len(Constants.set_pfr)
             sum_pfr = np.zeros(lenght)
             for book in spread_to_clusters:
-                count_ngramm = book.get_length()/book.get_N()
+                #count_ngramm = book.get_length()/book.get_N()
+                count_ngramm = book.get_length()
                 tmp = book.get_pfr()* count_ngramm
                 sum_pfr += tmp          
                 sum_gr += count_ngramm
@@ -63,7 +64,7 @@ class KMeans(object):
         for key, spread_to_clusters in self.clusters.items():
             for book in spread_to_clusters:
                 dist = sum(np.absolute(book.get_pfr() - np.array(self.centroids[key])))
-                cost += dist
+                cost += dist**2
         return cost
                
     def start_clustering(self):

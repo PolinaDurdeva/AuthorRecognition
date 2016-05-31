@@ -11,18 +11,17 @@ def get_set_pfr(language):
     print "SUPER WORK"
     set_pfr = list()
     if (language == u'en'):
-        for l in string.ascii_letters:
-            for w in string.ascii_letters:
-                for z in string.ascii_letters:
-                    set_pfr.append(l+w+z)
-    if (language == u'ru'):
-        alf = u"абвгдеёжздиклмнопрстуфхцчщшъьюяыэ"
-        for l in alf:
-            for w in alf:
-                for z in alf:
-                    set_pfr.append(l+w+z)
+        alf = string.ascii_letters
+    elif (language == u'ru'):
+        alf = u"абвгдежзийклмнопрстуфхцчшщъьюыэя"
+    elif (language == u'ger'):
+        alf = u"qwertyuiopasdfghjklzxcvbnmäöüß"
+    for l in alf:
+        for w in alf:
+            for z in alf:
+                set_pfr.append(l+w+z)
     return set_pfr
-
+    
 def remove_eng_letters(text):
         print 'remove eng_letters in book'
         for c in string.ascii_lowercase:
@@ -63,5 +62,7 @@ def remove_space(text):
 def clean_dir(path):
     for f in os.listdir(path):
         os.remove(os.path.join(path,f))
-        
+
+def cut_text(text,len):
+    return text[0:len]       
 

@@ -1,21 +1,18 @@
-import os
-from BookModule import Book
 import numpy as np
 import Constants
-import numpy as np
-
+import sys
 
 class Author(object):
 
     def __init__(self, name, books):
-        print  "author is loaded"
         self.name = name
         self.books = books
         self.count_book = len(self.books)
-        self.sum_gramm = 0
-        self.avg_pfr = list()
+        self.count_ngramm = 0
+        self.author_pfr = list()
         ###
-        self.set_avg_pfr()
+        self.set_author_pfr()
+        print  "author is loaded"
    
     def get_name(self):
         return self.name
@@ -24,24 +21,39 @@ class Author(object):
         return self.books
     
     def get_sum_gramm(self):
-        return self.sum_gramm
+        return self.count_ngramm
         
-    def get_avg_pfr(self):
-        return np.array(self.avg_pfr)
+    def get_author_pfr(self):
+        return np.array(self.author_pfr)
     
-    def set_avg_pfr(self):
-        sum_gr = 0   
+    def get_book_min_len(self):
+        min_len = sys.maxint
+        for book in self.books:
+            if (book.get_length() < min_len):
+                min_book = book
+                min_len = book.get_length()
+        return min_book 
+    
+    def get_book_max_len(self):
+        max_len = 0
+        for book in self.books:
+            if (book.get_length() > max_len):
+                max_book = book
+                max_len = book.get_length()
+        return max_book
+               
+    
+    def set_author_pfr(self):
+        count_ngramm = 0   
         lenght = len(Constants.set_pfr)
         sum_pfr = np.zeros(lenght)
         for book in self.books:
-            c_ng = book.get_length()/book.get_N()
-            tmp = book.get_pfr()* c_ng
-            sum_pfr += tmp          
-            sum_gr+= c_ng
-        self.avg_pfr = sum_pfr/sum_gr
-        self.sum_gramm = sum_gr
+            c_ng = book.get_length()
+            sum_pfr += book.get_pfr() * c_ng          
+            count_ngramm += c_ng
+        self.author_pfr = sum_pfr/count_ngramm
+        self.count_ngramm = count_ngramm
     
-   # def get_avg_book(self):
         
                    
             
